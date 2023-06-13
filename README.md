@@ -1,4 +1,4 @@
-# Generative AI Immersion Day
+# Generative AI on AWS Immersion Day
 
 This workshop is set up following the popular AWS Immersion Day format. It means to provide guidance on how to get started with Generative AI on AWS. The Immersion Day is split up into the following four blocks, consisting of a theory section covered by slides as well of a hands-on lab each:
 - Introduction Generative AI & Large Language Models, Large Language Model deployment & inference optimization
