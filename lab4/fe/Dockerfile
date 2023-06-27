@@ -15,5 +15,5 @@ EXPOSE 80
 
 ENTRYPOINT [ "streamlit", "run", "app.py", \
     "--server.enableCORS", "true", \
-             "--server.port", "80", \
-             "--browser.serverPort", "80"]
+    "--server.port", "80", \
+    "--browser.serverPort", "80"]

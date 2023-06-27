@@ -18,6 +18,7 @@ Resources:
         Variables:
           REGION: !Ref "AWS::Region"
           KENDRA_INDEX_ID: "***KENDRA_INDEX_ID***"
+          SM_ENDPOINT_NAME: "***SAGEMAKER_ENDPOINT_NAME***"
       Role: !GetAtt LambdaExecutionRole.Arn
       Events:
         ApiEvent:

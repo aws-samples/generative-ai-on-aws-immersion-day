@@ -12,7 +12,8 @@ import uuid
 
 
 AI_ICON = "aws.png"
-base_url = os.getenv('BASE_URL')
+# base_url = os.getenv('BASE_URL')
+base_url = "https://s1jqn00gb6.execute-api.eu-west-1.amazonaws.com/Stage"
 headers = {'Content-Type': 'application/json'}
 
 st.set_page_config(page_title="AWSomeChat - An LLM-powered chatbot on AWS documentation")
@@ -49,15 +50,20 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+
 def create_session_id():
     return str(uuid.uuid4())
+
 
 # Create or get the session state
 def get_session():
     if 'session_id' not in st.session_state:
         st.session_state.session_id = create_session_id()
     return st.session_state.session_id
+
+
 session_id = get_session()
+
 
 # Refresh button callback
 def refresh():
@@ -66,10 +72,12 @@ def refresh():
     st.session_state['generated'] = ["Hi, I'm AWSomeChat. I have lots of information on AWS documentation. How may I help you?"]
     st.session_state['past'] = []
 
+
 def clear():
     st.session_state.session_id = session_id
     st.session_state['generated'] = ["Hi, I'm AWSomeChat. I have lots of information on AWS documentation. How may I help you?"]
     st.session_state['past'] = []
+    st.session_state['input'] = ""
 
 
 def write_logo():
@@ -85,12 +93,14 @@ def write_top_bar():
     with col2:
         st.write(f"<h4 class='main-header'>AWSomeChat</h4>",  unsafe_allow_html=True)
     with col3:
-        if st.button("Clear Chat"):
+        if st.button("Clear Chat", key="clear"):
             clear()
     with col4:
         if st.button('Reset Session'):
             refresh()
+
 write_top_bar()
+
 session_header = f" Session ID:  {session_id}"
 st.write(f"<h4 class='main-header'>{session_header}</h4>",  unsafe_allow_html=True)
 
@@ -99,8 +109,8 @@ colored_header(label='', description='', color_name='blue-30')
 
 # Layout of input/response containers
 input_container = st.container()
-
 response_container = st.container()
+
 
 # User input
 ## Function for taking user provided prompt as input
@@ -111,8 +121,9 @@ def get_text():
 with input_container:
     user_input = get_text()
 
+
 # Generate empty lists for generated and past.
-## generated stores AI generated responses
+# generated stores AI generated responses
 if 'generated' not in st.session_state:
     st.session_state['generated'] = ["Hi, I'm AWSomeChat. I have lots of information on AWS documentation. How may I help you?"]
 ## past stores User's questions
@@ -129,6 +140,7 @@ def generate_response(prompt):
     output_text = response.text
     return output_text
 
+
 ## Conditional display of AI generated responses as a function of user provided prompts
 with response_container:
     if user_input:
@@ -141,3 +153,4 @@ with response_container:
             if i > 0:
                 message(st.session_state['past'][i-1], is_user=True, key=str(i) + '_user')
             message(st.session_state["generated"][i], key=str(i))
+    
