@@ -12,9 +12,9 @@ from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
 from kendra.kendra_index_retriever import KendraIndexRetriever
 
 
-
 REGION = os.environ.get('REGION')
 KENDRA_INDEX_ID = os.environ.get('KENDRA_INDEX_ID')
+SM_ENDPOINT_NAME = os.environ.get('SM_ENDPOINT_NAME')
 
 
 # Generative LLM 
@@ -32,12 +32,14 @@ class ContentHandler(LLMContentHandler):
 
 content_handler = ContentHandler()
 
+# SageMaker langchain integration, to assist invoking SageMaker endpoint.
 llm=SagemakerEndpoint(
-    endpoint_name="***ENDPOINT_NAME***",
+    endpoint_name=SM_ENDPOINT_NAME,
     model_kwargs={"temperature":0, "max_length":200},
-    region_name=REGION, 
+    region_name=REGION,
     content_handler=content_handler, 
 )
+
 
 _template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language. 
 
@@ -45,9 +47,17 @@ Chat History:
 {chat_history}
 Follow Up Input: {question}
 Standalone question:"""
-
-
 CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
+
+prompt_template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+{context}
+
+Question: {question}
+Helpful Answer:"""
+QA_PROMPT = PromptTemplate(
+    template=prompt_template, input_variables=["context", "question"]
+)
 
 
 def lambda_handler(event, context):
@@ -61,16 +71,20 @@ def lambda_handler(event, context):
 
     message_history = DynamoDBChatMessageHistory(table_name="MemoryTable", session_id=uuid)
     memory = ConversationBufferWindowMemory(memory_key="chat_history", chat_memory=message_history, return_messages=True, k=3)
+    print(memory)
 
     retriever = KendraIndexRetriever(kendraindex=KENDRA_INDEX_ID, 
-      awsregion=REGION, 
-      return_source_documents=True)
-    qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory, condense_question_prompt=CONDENSE_QUESTION_PROMPT, verbose=True)
+                                     awsregion=REGION, 
+                                     return_source_documents=True)
+    print(retriever)
+    
+    qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory, condense_question_prompt=QA_PROMPT, verbose=True)
+    print(qa)
 
-
+    
     response = qa.run(query)   
 
     return {
-            'statusCode': 200,
-            'body': json.dumps(response)
+        'statusCode': 200,
+        'body': json.dumps(response)
         }
