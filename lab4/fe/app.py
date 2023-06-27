@@ -12,8 +12,8 @@ import uuid
 
 
 AI_ICON = "aws.png"
-# base_url = os.getenv('BASE_URL')
-base_url = "https://rl51p7sec6.execute-api.eu-west-1.amazonaws.com/Stage"
+base_url = os.getenv('BASE_URL')
+# base_url = "https://rl51p7sec6.execute-api.eu-west-1.amazonaws.com/Stage"
 headers = {'Content-Type': 'application/json'}
 
 st.set_page_config(page_title="AWSomeChat - An LLM-powered chatbot on AWS documentation")
