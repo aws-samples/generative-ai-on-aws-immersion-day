@@ -15,27 +15,39 @@ from kendra.kendra_index_retriever import KendraIndexRetriever
 REGION = os.environ.get('REGION')
 KENDRA_INDEX_ID = os.environ.get('KENDRA_INDEX_ID')
 SM_ENDPOINT_NAME = os.environ.get('SM_ENDPOINT_NAME')
-
+SM_MODEL_TYPE = os.environ.get('SM_MODEL_NAME').lower() # falcon for jumpstart model - Falcon 7B Instruct BF16 or flan for jumpstart model - Flan-T5 XXL 
 
 # Generative LLM 
 class ContentHandler(LLMContentHandler):
     content_type = "application/json"
     accepts = "application/json"
-
     def transform_input(self, prompt, model_kwargs):
-        input_str = json.dumps({"text_inputs": prompt, **model_kwargs})
-        return input_str.encode('utf-8')
-    
+        if SM_MODEL_TYPE == "falcon":
+            input_str = json.dumps({"inputs": prompt, **model_kwargs})
+            return input_str.encode('utf-8')
+        if SM_MODEL_TYPE == "flan":
+            input_str = json.dumps({"text_inputs": prompt, **model_kwargs})
+            return input_str.encode('utf-8') 
+            
+        
     def transform_output(self, output):
         response_json = json.loads(output.read().decode("utf-8"))
-        return response_json["generated_texts"][0]
+        if SM_MODEL_TYPE == "falcon":
+            return response_json[0]['generated_text']
+        if SM_MODEL_TYPE == "flan":
+            return response_json["generated_texts"][0]
 
 content_handler = ContentHandler()
 
+if SM_MODEL_TYPE == "falcon":
+    kwargs = {"parameters": {"do_sample": True, "top_p": 0.9,"max_new_tokens": 1024, "top_k": 1, "temperature":0.9}}
+if SM_MODEL_TYPE == "flan":
+    kwargs = {"do_sample": True,"temperature": 0.9, "max_length": 1024}
+    
 # SageMaker langchain integration, to assist invoking SageMaker endpoint.
 llm=SagemakerEndpoint(
     endpoint_name=SM_ENDPOINT_NAME,
-    model_kwargs={"temperature":0, "max_length":200},
+    model_kwargs=kwargs,
     region_name=REGION,
     content_handler=content_handler, 
 )
@@ -76,5 +88,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps(response)
+        'body': json.dumps(f"{SM_MODEL_TYPE}: {response}")
         }
