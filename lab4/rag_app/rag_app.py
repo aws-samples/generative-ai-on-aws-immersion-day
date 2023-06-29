@@ -17,6 +17,7 @@ KENDRA_INDEX_ID = os.environ.get('KENDRA_INDEX_ID')
 SM_ENDPOINT_NAME = os.environ.get('SM_ENDPOINT_NAME')
 SM_MODEL_TYPE = os.environ.get('SM_MODEL_TYPE') # falcon for jumpstart model - Falcon 7B Instruct BF16 or flan for jumpstart model - Flan-T5 XXL 
 
+
 # Generative LLM 
 class ContentHandler(LLMContentHandler):
     content_type = "application/json"
@@ -40,9 +41,9 @@ class ContentHandler(LLMContentHandler):
 content_handler = ContentHandler()
 
 if SM_MODEL_TYPE == "falcon":
-    kwargs = {"parameters": {"do_sample": True, "top_p": 0.9,"max_new_tokens": 1024, "top_k": 1, "temperature":0.9}}
+    kwargs = {"parameters": {"do_sample": True, "max_length": 2000, "num_return_sequences": 1, "top_k": 10, "temperature":0.9}}
 if SM_MODEL_TYPE == "flan":
-    kwargs = {"do_sample": True,"temperature": 0.9, "max_length": 1024}
+    kwargs = {"do_sample": True,"temperature": 0.9, "max_length": 2000}
     
 # SageMaker langchain integration, to assist invoking SageMaker endpoint.
 llm=SagemakerEndpoint(
@@ -72,21 +73,22 @@ def lambda_handler(event, context):
 
     message_history = DynamoDBChatMessageHistory(table_name="MemoryTable", session_id=uuid)
     memory = ConversationBufferWindowMemory(memory_key="chat_history", chat_memory=message_history, return_messages=True, k=3)
-    print(memory)
+    # print(memory)
 
     retriever = KendraIndexRetriever(kendraindex=KENDRA_INDEX_ID, 
                                      awsregion=REGION, 
                                      return_source_documents=True)
-    print(retriever)
+    # print(retriever)
     
     qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory, condense_question_prompt=CONDENSE_QUESTION_PROMPT, verbose=True)
-    print(qa)
+    # print(qa)
 
     
     response = qa.run(query)   
-    print(response)
+    clean_response = response.replace('\n','').strip()
+    # print(json.dumps(f"{SM_MODEL_TYPE}: {clean_response}"))
 
     return {
         'statusCode': 200,
-        'body': json.dumps(f"{SM_MODEL_TYPE}: {response}")
+        'body': json.dumps(f"{SM_MODEL_TYPE}: {clean_response}")
         }

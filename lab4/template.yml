@@ -19,7 +19,7 @@ Resources:
           REGION: !Ref "AWS::Region"
           KENDRA_INDEX_ID: "***KENDRA_INDEX_ID***"
           SM_ENDPOINT_NAME: "***SAGEMAKER_ENDPOINT_NAME***"
-          SM_MODEL_TYPE: "***SM_MODEL_TYPE***" 
+          SM_MODEL_TYPE: "***SM_MODEL_TYPE***" # flan | falcon
       Role: !GetAtt LambdaExecutionRole.Arn
       Events:
         ApiEvent:
