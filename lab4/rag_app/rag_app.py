@@ -15,7 +15,7 @@ from kendra.kendra_index_retriever import KendraIndexRetriever
 REGION = os.environ.get('REGION')
 KENDRA_INDEX_ID = os.environ.get('KENDRA_INDEX_ID')
 SM_ENDPOINT_NAME = os.environ.get('SM_ENDPOINT_NAME')
-SM_MODEL_TYPE = os.environ.get('SM_MODEL_NAME') # falcon for jumpstart model - Falcon 7B Instruct BF16 or flan for jumpstart model - Flan-T5 XXL 
+SM_MODEL_TYPE = os.environ.get('SM_MODEL_TYPE') # falcon for jumpstart model - Falcon 7B Instruct BF16 or flan for jumpstart model - Flan-T5 XXL 
 
 # Generative LLM 
 class ContentHandler(LLMContentHandler):
