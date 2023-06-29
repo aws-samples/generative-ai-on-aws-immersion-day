@@ -9,7 +9,8 @@ from langchain.llms.sagemaker_endpoint import ContentHandlerBase, LLMContentHand
 from langchain.memory import ConversationBufferWindowMemory
 from langchain import PromptTemplate, LLMChain
 from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
-from kendra.kendra_index_retriever import KendraIndexRetriever
+# from kendra.kendra_index_retriever import KendraIndexRetriever
+from langchain.retrievers import AmazonKendraRetriever
 
 
 REGION = os.environ.get('REGION')
@@ -74,11 +75,19 @@ def lambda_handler(event, context):
     message_history = DynamoDBChatMessageHistory(table_name="MemoryTable", session_id=uuid)
     memory = ConversationBufferWindowMemory(memory_key="chat_history", chat_memory=message_history, return_messages=True, k=3)
     # print(memory)
-
-    retriever = KendraIndexRetriever(kendraindex=KENDRA_INDEX_ID, 
-                                     awsregion=REGION, 
-                                     return_source_documents=True)
-    # print(retriever)
+    
+    # This retriever is using the query API, self implement
+    # retriever = KendraIndexRetriever(kendraindex=KENDRA_INDEX_ID, 
+    #                                  awsregion=REGION, 
+    #                                  return_source_documents=True)
+    
+    # This retriever is using the new Kendra retrieve API https://aws.amazon.com/blogs/machine-learning/quickly-build-high-accuracy-generative-ai-applications-on-enterprise-data-using-amazon-kendra-langchain-and-large-language-models/
+    retriever = AmazonKendraRetriever(
+        index_id=KENDRA_INDEX_ID,
+        region_name=REGION,
+    )
+    
+    retriever.get_relevant_documents(query)
     
     qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory, condense_question_prompt=CONDENSE_QUESTION_PROMPT, verbose=True)
     # print(qa)
@@ -86,7 +95,6 @@ def lambda_handler(event, context):
     
     response = qa.run(query)   
     clean_response = response.replace('\n','').strip()
-    # print(json.dumps(f"{SM_MODEL_TYPE}: {clean_response}"))
 
     return {
         'statusCode': 200,
