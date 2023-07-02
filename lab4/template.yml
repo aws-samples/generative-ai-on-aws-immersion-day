@@ -80,6 +80,7 @@ Resources:
                 Action:
                   - kendra:Query
                   - kendra:BatchGetDocumentStatus
+                  - kendra:Retrieve
                 Resource: "*"
 
 # VPC
