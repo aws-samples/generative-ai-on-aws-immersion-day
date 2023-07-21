@@ -16,8 +16,6 @@ from langchain.retrievers import AmazonKendraRetriever
 REGION = os.environ.get('REGION')
 KENDRA_INDEX_ID = os.environ.get('KENDRA_INDEX_ID')
 SM_ENDPOINT_NAME = os.environ.get('SM_ENDPOINT_NAME')
-SM_MODEL_TYPE = os.environ.get('SM_MODEL_TYPE') # falcon for jumpstart model - Falcon 7B Instruct BF16 or flan for jumpstart model - Flan-T5 XXL 
-
 
 # Generative LLM 
 
@@ -48,11 +46,6 @@ SM_MODEL_TYPE = os.environ.get('SM_MODEL_TYPE') # falcon for jumpstart model - F
 #         return response_json[0]["generated_text"]
 
 content_handler = ContentHandler()
-
-#if SM_MODEL_TYPE == "falcon":
-#    kwargs = {"parameters": {"do_sample": True, "max_length": 2000, "num_return_sequences": 1, "top_k": 10, "temperature":0.9}}
-#if SM_MODEL_TYPE == "flan":
-#    kwargs = {"do_sample": True,"temperature": 0.9, "max_length": 2000}
     
 # SageMaker langchain integration, to assist invoking SageMaker endpoint.
 llm=SagemakerEndpoint(
@@ -103,5 +96,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps(f"{SM_MODEL_TYPE}: {clean_response}")
+        'body': json.dumps(f'{clean_response}')
         }
