@@ -16,40 +16,41 @@ from langchain.retrievers import AmazonKendraRetriever
 REGION = os.environ.get('REGION')
 KENDRA_INDEX_ID = os.environ.get('KENDRA_INDEX_ID')
 SM_ENDPOINT_NAME = os.environ.get('SM_ENDPOINT_NAME')
-SM_MODEL_TYPE = os.environ.get('SM_MODEL_TYPE') # falcon for jumpstart model - Falcon 7B Instruct BF16 or flan for jumpstart model - Flan-T5 XXL 
-
 
 # Generative LLM 
-class ContentHandler(LLMContentHandler):
-    content_type = "application/json"
-    accepts = "application/json"
-    def transform_input(self, prompt, model_kwargs):
-        if SM_MODEL_TYPE == "falcon":
-            input_str = json.dumps({"inputs": prompt, **model_kwargs})
-            return input_str.encode('utf-8')
-        if SM_MODEL_TYPE == "flan":
-            input_str = json.dumps({"text_inputs": prompt, **model_kwargs})
-            return input_str.encode('utf-8') 
-            
-        
-    def transform_output(self, output):
-        response_json = json.loads(output.read().decode("utf-8"))
-        if SM_MODEL_TYPE == "falcon":
-            return response_json[0]['generated_text']
-        if SM_MODEL_TYPE == "flan":
-            return response_json["generated_texts"][0]
+
+# Content Handler for Option 1 - FLAN-T5-XXL - please uncomment below if you used this option
+# class ContentHandler(LLMContentHandler):
+#     content_type = "application/json"
+#     accepts = "application/json"
+
+#     def transform_input(self, prompt, model_kwargs):
+#         input_str = json.dumps({"text_inputs": prompt, "temperature": 0, "max_length": 200})
+#         return input_str.encode('utf-8')
+    
+#     def transform_output(self, output):
+#         response_json = json.loads(output.read().decode("utf-8"))
+#         return response_json["generated_texts"][0]
+
+# Content Handler for Option 2 - Falcon40b-instruct - please uncomment below if you used this option
+# class ContentHandler(LLMContentHandler):
+#     content_type = "application/json"
+#     accepts = "application/json"
+
+#     def transform_input(self, prompt, model_kwargs):
+#         input_str = json.dumps({"inputs": prompt, "parameters": {"do_sample": False, "repetition_penalty": 1.1, "return_full_text": False, "max_new_tokens":100}})
+#         return input_str.encode('utf-8')
+    
+#     def transform_output(self, output):
+#         response_json = json.loads(output.read().decode("utf-8"))
+#         return response_json[0]["generated_text"]
 
 content_handler = ContentHandler()
-
-if SM_MODEL_TYPE == "falcon":
-    kwargs = {"parameters": {"do_sample": True, "max_length": 2000, "num_return_sequences": 1, "top_k": 10, "temperature":0.9}}
-if SM_MODEL_TYPE == "flan":
-    kwargs = {"do_sample": True,"temperature": 0.9, "max_length": 2000}
     
 # SageMaker langchain integration, to assist invoking SageMaker endpoint.
 llm=SagemakerEndpoint(
     endpoint_name=SM_ENDPOINT_NAME,
-    model_kwargs=kwargs,
+#    model_kwargs=kwargs,
     region_name=REGION,
     content_handler=content_handler, 
 )
@@ -74,7 +75,6 @@ def lambda_handler(event, context):
 
     message_history = DynamoDBChatMessageHistory(table_name="MemoryTable", session_id=uuid)
     memory = ConversationBufferWindowMemory(memory_key="chat_history", chat_memory=message_history, return_messages=True, k=3)
-    # print(memory)
     
     # This retriever is using the query API, self implement
     # retriever = KendraIndexRetriever(kendraindex=KENDRA_INDEX_ID, 
@@ -87,16 +87,14 @@ def lambda_handler(event, context):
         region_name=REGION,
     )
     
-    retriever.get_relevant_documents(query)
+    # retriever.get_relevant_documents(query)
     
     qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory, condense_question_prompt=CONDENSE_QUESTION_PROMPT, verbose=True)
-    # print(qa)
 
-    
     response = qa.run(query)   
     clean_response = response.replace('\n','').strip()
 
     return {
         'statusCode': 200,
-        'body': json.dumps(f"{SM_MODEL_TYPE}: {clean_response}")
+        'body': json.dumps(f'{clean_response}')
         }
