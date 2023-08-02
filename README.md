@@ -1,3 +1,8 @@
+
+# Implementing Generative AI on AWS workshop
+
+For full details please refer to Workshop Studio: https://catalog.us-east-1.prod.workshops.aws/workshops/80ae1ed2-f415-4d3d-9eb0-e9118c147bd4
+
 This workshop is set up following the popular AWS Immersion Day format. It means to provide guidance on how to get started with Generative AI on AWS. The Immersion Day is split up into the following four blocks, consisting of a theory section covered by slides as well of a hands-on lab each:
 - Introduction Generative AI & Large Language Models, Large Language Model deployment & inference optimization
 - Large Language Model finetuning
