@@ -30,6 +30,5 @@ This library is licensed under the MIT-0 License. See the LICENSE file.
 ## References
 This workshop is an adaptation of the given full workshops:
 - Generative AI on AWS workshop present on:  https://catalog.us-east-1.prod.workshops.aws/workshops/80ae1ed2-f415-4d3d-9eb0-e9118c147bd4
-- Leveraging your data with GenAI workshop present on:  https://studio.us-east-1.prod.workshops.aws/workshops/public/89d52d78-cc4d-45c3-9f5f-91476547b215
-
+- Leveraging your data with GenAI workshop present on: https://catalog.us-east-1.prod.workshops.aws/workshops/89d52d78-cc4d-45c3-9f5f-91476547b215
 
