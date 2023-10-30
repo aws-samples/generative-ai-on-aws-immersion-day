@@ -1,0 +1,17 @@
+corpus:
+  path14A_html: ../data/14A/
+  path14A_frag: ../data/14A_frags/
+  path14A_meta: ../data/14A_meta/
+
+kendra:
+  index_id: bdf6fe0a-278d-4bde-8eb5-371a8baa3221
+  region_name: us-east-1
+  data_source: s3://kendra-fsi-demo/documents/
+
+aos:
+ aos_host: search-fsi-demo-4cwx3wdfzhozxbtxhj42kuwhoe.us-east-1.es.amazonaws.com
+ aos_index: workshop-demo-knn
+
+llm:
+  t5_endpoint: jumpstart-example-huggingface-text2text-2023-07-05-18-35-17-665
+  embedding_endpoint: jumpstart-example-huggingface-textembed-2023-07-05-16-49-40-589
