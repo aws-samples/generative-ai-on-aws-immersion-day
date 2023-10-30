@@ -15,8 +15,8 @@ The repository is structured as follows: The slides can be found in the Generati
     - Option 1: For GPT-J start with the notebook option-1-gpt-j-notebook-full.ipynb.
     - Option 2: For Falcon7b-instruct start with the notebook falcon7b-instruct-notebook-full.ipynb.
     - Option 3: For Falcon40b-instruct start with the notebook falcon40b-instruct-notebook-full.ipynb.
-- Lab 2 - Hosting Stable Diffusion can be found in the lab3 directory. Start with the notebook JumpStart_Stable_Diffusion_Inference_Only.ipynb.
-- Lab (optional) - Finetuning Large Language Models can be found in the lab2 directory. Start with the notebook fine-tuning.ipynb.
+- Lab 2 - Hosting Stable Diffusion can be found in the lab2 directory. Start with the notebook JumpStart_Stable_Diffusion_Inference_Only.ipynb.
+- Lab (optional) - Finetuning Large Language Models can be found in the lab-optional directory. Start with the notebook fine-tuning.ipynb.
 
 ## Security
 
