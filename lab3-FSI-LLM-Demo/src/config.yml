@@ -6,7 +6,7 @@ corpus:
 kendra:
   index_id: [YOUR KENDRA INDEX ID]
   region_name: us-east-1
-  data_source: s3://kendra-fsi-demo/documents/
+  data_source: s3://genaiconf-[YOUR S3 ID]
 
 aos:
  aos_host: [YOUR OPENSEARCH DOMAIN ENDPOINT]
