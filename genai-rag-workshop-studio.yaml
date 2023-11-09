@@ -1,0 +1,1195 @@
+Parameters:
+  DomainNameopensearch:
+    Type: String
+    Description: The domain name for opensearch
+    Default: 'genaiopensearch'
+  UserProfileName:
+    Type: String
+    Description: The user profile name for the SageMaker workshop
+    Default: 'SageMakerUser'
+  UserProfileName1:
+    Type: String
+    Description: The user profile name for the SageMaker workshop
+    Default: 'SageMakerUser1'
+  UserProfileName2:
+    Type: String
+    Description: The user profile name for the SageMaker workshop
+    Default: 'SageMakerUser2'
+  DomainName:
+    Type: String
+    Description: The domain name of the Sagemaker studio instance
+    Default: 'MyDomain'
+  sourcebucket:
+    Type: String
+    Description: The source bucket for kendra
+    Default: 'genaiconffaq-2871ce00'
+  MyAssetsBucketName:
+    Description: Assets bucket name
+    Type: String
+    Default: 'ws-assets-prod-iad-r-iad-ed304a55c2ca1aee'
+  MyAssetsBucketPrefixcode:
+    Description: Assets bucket prefix code
+    Type: String
+    Default: '89d52d78-cc4d-45c3-9f5f-91476547b215/code'
+  MyAssetsBucketPrefixdata:
+    Description: Assets bucket prefix data
+    Type: String
+    Default: '89d52d78-cc4d-45c3-9f5f-91476547b215'
+  
+Mappings: 
+  RegionMap: 
+    us-east-1: 
+      datascience: "arn:aws:sagemaker:us-east-1:081325390199:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:us-east-1:081325390199:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:us-east-1:663277389841:image/sagemaker-data-wrangler-1.0"
+      codezipfile: "s3://ws-assets-prod-iad-r-iad-ed304a55c2ca1aee/89d52d78-cc4d-45c3-9f5f-91476547b215/code/fsi-llm-demo.tar.gz"
+      sourcebucketuri: "s3://ws-assets-prod-iad-r-iad-ed304a55c2ca1aee/89d52d78-cc4d-45c3-9f5f-91476547b215/data.tar.gz"
+    us-east-2:
+      datascience: "arn:aws:sagemaker:us-east-2:429704687514:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:us-east-2:429704687514:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:us-east-2:415577184552:image/sagemaker-data-wrangler-1.0"
+      sourcebucketuri: "s3://ws-assets-prod-iad-r-cmh-8d6e9c21a4dec77d/89d52d78-cc4d-45c3-9f5f-91476547b215/data.tar.gz"
+      codezipfile: "s3://ws-assets-prod-iad-r-cmh-8d6e9c21a4dec77d/89d52d78-cc4d-45c3-9f5f-91476547b215/code/fsi-llm-demo.tar.gz" 
+    us-west-1: 
+      datascience: "arn:aws:sagemaker:us-west-1:742091327244:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:us-west-1:742091327244:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:us-west-1:926135532090:image/sagemaker-data-wrangler-1.0"
+      sourcebucketuri: "s3://ws-assets-prod-iad-r-sfo-f61fc67057535f1b/89d52d78-cc4d-45c3-9f5f-91476547b215/data.tar.gz"
+      codezipfile: "s3://ws-assets-prod-iad-r-sfo-f61fc67057535f1b/89d52d78-cc4d-45c3-9f5f-91476547b215/code/fsi-llm-demo.tar.gz" 
+    us-west-2: 
+      datascience: "arn:aws:sagemaker:us-west-2:236514542706:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:us-west-2:236514542706:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:us-west-2:174368400705:image/sagemaker-data-wrangler-1.0"
+      sourcebucketuri: "s3://ws-assets-prod-iad-r-pdx-f3b3f9f1a7d6a3d0/89d52d78-cc4d-45c3-9f5f-91476547b215/data.tar.gz"
+      codezipfile: "s3://ws-assets-prod-iad-r-pdx-f3b3f9f1a7d6a3d0/89d52d78-cc4d-45c3-9f5f-91476547b215/code/fsi-llm-demo.tar.gz" 
+    af-south-1:
+      datascience: "arn:aws:sagemaker:af-south-1:559312083959:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:af-south-1:559312083959:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:af-south-1:143210264188:image/sagemaker-data-wrangler-1.0"    
+    ap-east-1:
+      datascience: "arn:aws:sagemaker:ap-east-1:493642496378:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ap-east-1:493642496378:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ap-east-1:707077482487:image/sagemaker-data-wrangler-1.0"
+    ap-south-1:
+      datascience: "arn:aws:sagemaker:ap-south-1:394103062818:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ap-south-1:394103062818:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ap-south-1:089933028263:image/sagemaker-data-wrangler-1.0"  
+    ap-northeast-2:
+      datascience: "arn:aws:sagemaker:ap-northeast-2:806072073708:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ap-northeast-2:806072073708:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ap-northeast-2:131546521161:image/sagemaker-data-wrangler-1.0"
+    ap-southeast-1:
+      datascience: "arn:aws:sagemaker:ap-southeast-1:492261229750:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ap-southeast-1:492261229750:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ap-southeast-1:119527597002:image/sagemaker-data-wrangler-1.0"      
+    ap-southeast-2:
+      datascience: "arn:aws:sagemaker:ap-southeast-2:452832661640:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ap-southeast-2:452832661640:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ap-southeast-2:422173101802:image/sagemaker-data-wrangler-1.0"
+    ap-northeast-1: 
+      datascience: "arn:aws:sagemaker:ap-northeast-1:102112518831:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ap-northeast-1:102112518831:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ap-northeast-1:649008135260:image/sagemaker-data-wrangler-1.0"
+    ca-central-1:
+      datascience: "arn:aws:sagemaker:ca-central-1:310906938811:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:ca-central-1:310906938811:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:ca-central-1:557239378090:image/sagemaker-data-wrangler-1.0"
+    eu-central-1: 
+      datascience: "arn:aws:sagemaker:eu-central-1:936697816551:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:eu-central-1:936697816551:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:eu-central-1:024640144536:image/sagemaker-data-wrangler-1.0"
+    eu-west-1:
+      datascience: "arn:aws:sagemaker:eu-west-1:470317259841:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:eu-west-1:470317259841:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:eu-west-1:245179582081:image/sagemaker-data-wrangler-1.0"
+    eu-west-2:
+      datascience: "arn:aws:sagemaker:eu-west-2:712779665605:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:eu-west-2:712779665605:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:eu-west-2:894491911112:image/sagemaker-data-wrangler-1.0"
+    eu-west-3:
+      datascience: "arn:aws:sagemaker:eu-west-3:615547856133:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:eu-west-3:615547856133:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:eu-west-3:807237891255:image/sagemaker-data-wrangler-1.0"
+    eu-north-1:
+      datascience: "arn:aws:sagemaker:eu-north-1:243637512696:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:eu-north-1:243637512696:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:eu-north-1:054986407534:image/sagemaker-data-wrangler-1.0"
+    eu-south-1:
+      datascience: "arn:aws:sagemaker:eu-south-1:488287956546:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:eu-south-1:488287956546:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:eu-south-1:592751261982:image/sagemaker-data-wrangler-1.0"
+    sa-east-1:
+      datascience: "arn:aws:sagemaker:sa-east-1:782484402741:image/datascience-1.0"
+      jupyter: "arn:aws:sagemaker:sa-east-1:782484402741:image/jupyter-server-3"
+      datawrangler: "arn:aws:sagemaker:sa-east-1:424196993095:image/sagemaker-data-wrangler-1.0"
+
+Resources:
+  LambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: LambdaPolicies
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: EnableGetVPCs
+                Effect: Allow
+                Action:
+                  - ec2:DescribeVpcs
+                  - ec2:DescribeSubnets
+                  - ec2:DescribeSecurityGroups
+                  - ec2:CreateNetworkInterface
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:DeleteNetworkInterface
+                Resource: '*'
+              - Sid: EnableProjectsLambda
+                Effect: Allow
+                Action:
+                  - sagemaker:EnableSagemakerServicecatalogPortfolio
+                Resource: '*'
+              - Sid: GetSageMakerExecutionRoleforCleanup
+                Effect: Allow
+                Action: iam:GetRole
+                Resource: !GetAtt SageMakerExecutionRole.Arn
+              - Sid: CleanUpSageMaker
+                Effect: Allow
+                Action: 
+                  - sagemaker:ListApps
+                  - sagemaker:DeleteApp
+                  - sagemaker:ListUserProfiles
+                  - sagemaker:DeleteUserProfile
+                  - sagemaker:ListDomains
+                  - sagemaker:DeleteDomain
+                  - sagemaker:ListProjects
+                  - sagemaker:DeleteProject
+                  - sagemaker:ListEndpoints
+                  - sagemaker:DeleteEndpoint
+                Resource: '*'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AWSServiceCatalogAdminFullAccess'
+
+  SageMakerExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Policies: 
+        - PolicyName: s3-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: AllowS3
+                Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource: '*'
+        - PolicyName: iam-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: AllowGetIAMInfo
+                Effect: Allow
+                Action:
+                  - iam:GetRole
+                  - iam:GetRolePolicy
+                Resource: 'arn:aws:iam::*:role/*SageMakerExecutionRole*'
+        - PolicyName: comprehend-pass-role
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: AllowComprehendPassRole
+                Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: 'arn:aws:iam::*:role/*SageMakerExecutionRole*'
+        - PolicyName: kms-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: GetEncryptionKeys
+                Effect: Allow
+                Action:
+                  - kms:CreateKey
+                  - kms:Get*
+                  - kms:List*
+                Resource: 'arn:aws:kms:*'
+        - PolicyName: kendrafullaccess
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: Allowkendrafullaccess
+                Effect: Allow
+                Action:
+                  - kendra:*
+                Resource: '*'
+        - PolicyName: opensearchfullaccess
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: Allowopensearchfullaccess
+                Effect: Allow
+                Action:
+                  - es:*
+                Resource: '*'
+      AssumeRolePolicyDocument: 
+        Version: 2012-10-17
+        Statement:
+          - Sid: AssumeOtherServiceRoles
+            Effect: Allow
+            Principal: 
+              Service: 
+                - sagemaker.amazonaws.com
+                - comprehend.amazonaws.com
+                - kendra.amazonaws.com
+                - es.amazonaws.com
+            Action: 
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonSageMakerFullAccess'
+        - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+        - 'arn:aws:iam::aws:policy/AWSCloudFormationFullAccess'
+        - 'arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess'
+        - 'arn:aws:iam::aws:policy/AmazonTextractFullAccess'
+        - 'arn:aws:iam::aws:policy/ComprehendFullAccess'
+        - 'arn:aws:iam::aws:policy/ComprehendMedicalFullAccess'
+        - 'arn:aws:iam::aws:policy/AmazonKendraFullAccess'
+        - 'arn:aws:iam::aws:policy/AmazonOpenSearchServiceFullAccess'
+  LambdaLifecycleExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: /
+
+  LambdaLifecycleExecutionPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: /
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: CloudWatchLogsPermissions
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: !Sub "arn:${AWS::Partition}:logs:*:*:*"
+          - Sid: SageMakerDomainPermission
+            Effect: Allow
+            Action:
+              - sagemaker:UpdateUserProfile
+              - sagemaker:CreateStudioLifecycleConfig
+            Resource: '*'
+          - Sid: AllowS3
+            Effect: Allow
+            Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:DeleteObject
+                - s3:ListBucket
+            Resource: '*'
+      Roles:
+        - !Ref  LambdaLifecycleExecutionRole
+  StudioLifecycleLambda:
+    Type: AWS::Lambda::Function
+    DependsOn: UserProfile
+    Properties:
+      FunctionName: LifecyleStudioConfig
+      Code:
+        ZipFile: |
+                   import os
+                   import json
+                   import boto3
+                   import base64
+                   import cfnresponse
+
+                   GIT_CLONE_CMD = 'git clone https://github.com/aws-samples/amazon-sagemaker-samples \n'
+                   GIT_CLONE_CMD += 'cd amazon-sagemaker-samples \n'
+                   GIT_CLONE_CMD += 'mv amazon-sagemaker-fraud-detection .. \n'
+                   GIT_CLONE_CMD += 'cd .. \n'
+                   GIT_CLONE_CMD += 'rm -rf amazon-sagemaker-samples \n'
+                    
+                    
+
+                   DOMAIN_ID = os.getenv('DOMAIN_ID')
+                   USER_PROFILE_NAME = os.getenv('USER_PROFILE_NAME')
+                   code_bucket=os.getenv('code_bucket')
+                   S3_CP_CMD='aws s3 cp ' +code_bucket+ ' .  \n'
+                   S3_CP_CMD+='tar -xf fsi-llm-demo.tar.gz'
+                    
+                    
+                   def lambda_handler(event, context):
+
+                        response_status = cfnresponse.SUCCESS
+                        execution_role = event['ResourceProperties']['ExecutionRole']
+
+                        if 'RequestType' in event and event['RequestType'] == 'Create':
+                            enable_lifecycle(execution_role)
+                        cfnresponse.send(event, context, response_status, {}, '')
+
+                   def enable_lifecycle(execution_role):
+
+                        #Encode cmd into Base64
+                        cmd_bytes = S3_CP_CMD.encode('ascii')
+                        base64_bytes = base64.b64encode(cmd_bytes)
+                        base64_string = base64_bytes.decode("ascii")
+
+                        sagemaker = boto3.client('sagemaker')
+
+                        # Create Lifecycle config
+                        response = sagemaker.create_studio_lifecycle_config(
+                            StudioLifecycleConfigName='git-clone-step',
+                            StudioLifecycleConfigContent=base64_string,
+                            StudioLifecycleConfigAppType='JupyterServer'
+                        )
+
+                        # Get Lifecycle ARN
+                        lifecycle_arn = response.get('StudioLifecycleConfigArn')
+                        print(lifecycle_arn)
+
+                        # Update SageMaker
+                        response_sm_profile = sagemaker.update_user_profile(
+                            DomainId=DOMAIN_ID,
+                            UserProfileName=USER_PROFILE_NAME,
+                            UserSettings={
+                                "JupyterServerAppSettings": {
+                                  "DefaultResourceSpec": {
+                                    "LifecycleConfigArn": lifecycle_arn,
+                                    "InstanceType": "system"
+                                  },
+                                  "LifecycleConfigArns":
+                                    [lifecycle_arn]
+                                }
+                            }
+                        )
+
+                        print(response_sm_profile)
+      Description: Configure Studio Lifecycle
+      Handler: index.lambda_handler
+      MemorySize: 512
+      Role: !GetAtt LambdaLifecycleExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 10
+      Environment:
+        Variables:
+          DOMAIN_ID: !GetAtt StudioDomain.DomainId
+          USER_PROFILE_NAME: !Ref UserProfileName
+          code_bucket: !Sub "s3://ws-assets-prod-iad-r-iad-ed304a55c2ca1aee/89d52d78-cc4d-45c3-9f5f-91476547b215/code/fsi-llm-demo.tar.gz" 
+  StudioDomain:
+    Type: AWS::SageMaker::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain    
+    Properties: 
+      AppNetworkAccessType: PublicInternetOnly
+      AuthMode: IAM
+      DefaultUserSettings: 
+          ExecutionRole: !GetAtt SageMakerExecutionRole.Arn
+          JupyterServerAppSettings: 
+            DefaultResourceSpec:
+              InstanceType: system
+              SageMakerImageArn: !FindInMap
+                - RegionMap
+                - !Ref 'AWS::Region'
+                - jupyter
+      DomainName: !Ref DomainName 
+      SubnetIds: !GetAtt DefaultVpcFinder.Subnets
+      VpcId: !GetAtt DefaultVpcFinder.VpcId
+  
+  EnableLifecycle:
+    Type: Custom::ResourceForEnablingLifecycleOnSageMaker
+    Properties:
+      ServiceToken: !GetAtt StudioLifecycleLambda.Arn
+      ExecutionRole: !GetAtt SageMakerExecutionRole.Arn
+
+  UserProfile:
+    Type: AWS::SageMaker::UserProfile
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties: 
+      DomainId: !GetAtt StudioDomain.DomainId
+      UserProfileName: !Ref UserProfileName
+      UserSettings:
+        ExecutionRole: !GetAtt SageMakerExecutionRole.Arn
+  
+
+  JupyterApp:
+    Type: AWS::SageMaker::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn: UserProfile
+    Properties: 
+      AppName: default
+      AppType: JupyterServer
+      DomainId: !GetAtt StudioDomain.DomainId
+      UserProfileName: !Ref UserProfileName
+  
+  
+
+### S3 Bucket similar to the one created by the create domain action in the UI
+  StudioBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LoggingConfiguration:
+        LogFilePrefix: s3-logs
+      BucketName: !Join
+        - "-"
+        - - "sagemaker-studio"
+          - !Select
+            - 0
+            - !Split
+              - "-"
+              - !Select
+                - 2
+                - !Split
+                  - "/"
+                  - !Ref "AWS::StackId"
+
+  S3BucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref StudioBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:GetObjectVersion
+            Effect: Allow
+            Resource:
+              - !Sub ${StudioBucket.Arn}/*
+            Principal:
+              AWS: !Ref AWS::AccountId
+          - Action:
+              - s3:GetBucketAcl
+              - s3:GetBucketLocation
+              - s3:PutBucketPolicy
+            Effect: Allow
+            Resource:
+              - !GetAtt StudioBucket.Arn
+            Principal:
+              AWS: !Ref AWS::AccountId
+  
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Description: Creating Amazon S3 bucket for Kendra DataSource
+    Properties:
+      BucketName: !Join
+        - "-"
+        - - "genaiconf"
+          - !Select
+            - 0
+            - !Split
+              - "-"
+              - !Select
+                - 2
+                - !Split
+                  - "/"
+                  - !Ref "AWS::StackId"
+  S3BucketFAQ:
+    Type: AWS::S3::Bucket
+    Description: Creating Amazon S3 bucket for Kendra DataSource
+    Properties:
+      BucketName: !Join
+        - "-"
+        - - "genaiconffaq"
+          - !Select
+            - 0
+            - !Split
+              - "-"
+              - !Select
+                - 2
+                - !Split
+                  - "/"
+                  - !Ref "AWS::StackId"
+  KendraS3DataSource:
+    Type: AWS::Kendra::DataSource
+    Properties:
+      DataSourceConfiguration:
+         S3Configuration:
+           BucketName: !Ref S3Bucket
+           InclusionPrefixes:
+             - data/14A/
+      Description: Kendra S3 Datasource config setup
+      IndexId: !GetAtt KendraIndex.Id
+      Name: 'genAI_conf_Kendra_Data_Source'
+      RoleArn: !GetAtt KendraDenyDataSourceIAMRole.Arn
+      Type: 'S3'
+
+
+  KendraDenyDataSourceIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join
+        - '-'
+        - - 'genai-conf-KendraDENYS3-DataSource-IAMRole'
+          - !Ref AWS::Region
+
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: kendra.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: kendra-deny-s3DataSource-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            # Deny S3 Permission to Kendra Index
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3Bucket, "/*"] ]
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3Bucket] ]
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3BucketFAQ, "/*"] ]
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3BucketFAQ] ]
+          - Effect: Allow
+            Action:
+            - kendra:BatchPutDocument
+            - kendra:BatchDeleteDocument
+            Resource: !Join ["", ["arn:aws:kendra:",!Ref "AWS::Region" ,":",!Ref "AWS::AccountId", ":index/",!GetAtt KendraIndex.Id] ]
+
+  KendraAllowDataSourceIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join
+        - '-'
+        - - 'genai-conf-KendraALLOWS3-DataSource-IAMRole'
+          - !Ref AWS::Region
+
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: kendra.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: kendra-allow-s3DataSource-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            # Allow S3 Permission to Kendra Index
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3Bucket, "/*"] ]
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3Bucket] ]
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3BucketFAQ, "/*"] ]
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            Resource: !Join ["", ["arn:aws:s3:::",!Ref S3BucketFAQ] ]
+          - Effect: Allow
+            Action:
+            - kendra:BatchPutDocument
+            - kendra:BatchDeleteDocument
+            Resource: !Join ["", ["arn:aws:kendra:",!Ref "AWS::Region" ,":",!Ref "AWS::AccountId", ":index/",!GetAtt KendraIndex.Id] ]
+
+
+
+  # Create Kendra IAM Role
+  KendraIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join
+        - '-'
+        - - 'genai-conf-Kendra-Monitoring-IAMRole'
+          - !Ref AWS::Region
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: kendra.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: kendra-index-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cloudwatch:PutMetricData
+            Resource: "*"
+            Condition :
+              StringEquals:
+                "cloudwatch:namespace": "AWS/Kendra"
+          - Effect: Allow
+            Action:
+            - logs:DescribeLogGroups
+            Resource: "*"
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            Resource: !Join ["", ["arn:aws:logs:",!Ref "AWS::Region" ,":",!Ref "AWS::AccountId", ":log-group:/aws/kendra/*"] ]
+          - Effect: Allow
+            Action:
+            - logs:DescribeLogStreams
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource: !Join ["", ["arn:aws:logs:",!Ref "AWS::Region" ,":",!Ref "AWS::AccountId", ":log-group:/aws/kendra/*:log-stream:*"] ]
+#Create Kendra Index
+  KendraIndex:
+    Type: AWS::Kendra::Index
+    Properties:
+      Description: "Kendra index"
+      Edition:  DEVELOPER_EDITION
+      Name: !Join
+        - "-"
+        - - "genai-conference-index"
+          - !Select
+            - 0
+            - !Split
+              - "-"
+              - !Select
+                - 2
+                - !Split
+                  - "/"
+                  - !Ref "AWS::StackId"
+      RoleArn: !GetAtt KendraIAMRole.Arn
+  CopyDatafileskendralambda:
+    Type: AWS::Lambda::Function
+    DependsOn: S3Bucket
+    Properties:
+      FunctionName: CopyDatafileskendra
+      Code:
+        ZipFile: |
+                  import boto3
+                  import os
+                  import tarfile
+                  import json
+                  import cfnresponse
+                  def list_files(dir):
+                      r = []
+                      for root, dirs, files in os.walk(dir):
+                          for name in files:
+                              r.append(os.path.join(root, name))
+                      return r
+                  def split_s3_path(s3_path):
+                      path_parts=s3_path.replace("s3://","").split("/")
+                      bucket=path_parts.pop(0)
+                      key="/".join(path_parts)
+                      return bucket, key
+                  def lambda_handler(event, context):                  
+
+                       response_status = cfnresponse.SUCCESS
+                       
+                       s3_client = boto3.client('s3')
+                       
+                       source_bucket_url =os.getenv('source_bucket')
+                       
+                       #print (source_bucket)
+                       source_bucket, sourcekeydata = split_s3_path(source_bucket_url)
+                       destination_bucket = os.getenv('destination_bucket')
+                       
+                       
+                       # Retrieve the list of objects in the source bucket
+                       #objects = s3_client.list_objects_v2(Bucket=source_bucket, Prefix=prefix)
+                       tar_file_path = '/tmp/{}'.format(sourcekeydata)
+                       if not os.path.exists(os.path.dirname(tar_file_path)):
+                            os.makedirs(os.path.dirname(tar_file_path)) 
+                       
+                       
+                       print(tar_file_path)
+                       s3_client.download_file(source_bucket, sourcekeydata, tar_file_path) 
+                       
+                       file = tarfile.open(tar_file_path)                  
+
+                       local_folder_path = '/tmp/extracted/'
+                          # extracting file
+                       file.extractall(local_folder_path)                  
+
+                       file.close()                  
+
+                       files = list_files(local_folder_path)                  
+
+                       print(files)                  
+
+                       for file in files:
+                              with open(file, 'rb') as f:
+                                  new_file = file.replace(local_folder_path, '')
+                                  print("new_file: {}".format(new_file))
+                                  s3_client.put_object(
+                                      Body=f, Bucket=destination_bucket, Key=new_file)
+                       
+                       code_bucket_url=os.getenv('code_bucket')
+                       code_bucket, codekeydata = split_s3_path(code_bucket_url)
+     
+                       s3_client.copy_object(Bucket=destination_bucket, Key='code/fsi-llm-demo.tar.gz', CopySource={'Bucket': code_bucket, 'Key': codekeydata})
+                       cfnresponse.send(event, context, response_status, {}, '')
+
+      Description: Copy data files for kendra index
+      Handler: index.lambda_handler
+      MemorySize: 512
+      Role: !GetAtt LambdaLifecycleExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 600
+      Environment:
+        Variables:
+          #source_bucket: !Sub   "${MyAssetsBucketName}"
+          #source_prefix: !Sub "${MyAssetsBucketPrefixdata}"
+          destination_bucket: !Ref S3Bucket
+          #source_prefix_code: !Sub "${MyAssetsBucketPrefixcode}"
+          source_bucket: !FindInMap
+                - RegionMap
+                - !Ref 'AWS::Region'
+                - sourcebucketuri
+          code_bucket: !FindInMap
+                - RegionMap
+                - !Ref 'AWS::Region'
+                - codezipfile      
+  Enablekendradatasource:
+    Type: Custom::ResourceForcopyfileskendra
+    Properties:
+      ServiceToken: !GetAtt CopyDatafileskendralambda.Arn
+      ExecutionRole: !GetAtt SageMakerExecutionRole.Arn
+###################
+# Kendra
+###################
+ 
+  OpenSearchServiceDomain:
+    Type: AWS::OpenSearchService::Domain
+    Properties:
+     DomainName: !Ref DomainNameopensearch
+     ClusterConfig:
+      InstanceCount: '1'
+      InstanceType: 't3.small.search'
+     EBSOptions:
+      EBSEnabled: true
+      Iops: '0'
+      VolumeSize: '10'
+      VolumeType: 'gp2'
+     AccessPolicies:
+      Version: '2012-10-17'
+      Statement:
+        Effect: Allow
+        Principal:
+          AWS: !GetAtt SageMakerExecutionRole.Arn
+        Action: 'es:*'
+        Resource: !Sub 'arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/${DomainNameopensearch}/*'
+     AdvancedSecurityOptions:
+      Enabled: true
+      MasterUserOptions:
+       MasterUserARN: !GetAtt SageMakerExecutionRole.Arn
+     NodeToNodeEncryptionOptions: 
+      Enabled: true
+     EncryptionAtRestOptions:
+      Enabled: true
+     DomainEndpointOptions:
+      EnforceHTTPS: true
+###################
+# Custom Resources
+###################
+
+  DefaultVpcFinder:
+    Type: Custom::ResourceForFindingDefaultVpc
+    Properties:
+      ServiceToken: !GetAtt DefaultVpcLambda.Arn    
+
+  DefaultVpcLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      ReservedConcurrentExecutions: 5
+      Code:
+        ZipFile: |
+          import boto3
+          import cfnresponse
+          import logging
+          LOGGER = logging.getLogger()
+          LOGGER.setLevel(logging.INFO)
+          def get_default_vpc_id(ec2):
+              LOGGER.info("Getting default VPC")
+              vpcs = ec2.describe_vpcs(Filters=[{"Name": "is-default", "Values": ["true"]}])
+              vpcs = vpcs["Vpcs"]
+              vpc_id = vpcs[0]["VpcId"]
+              return vpc_id
+          def get_subnets_for_vpc(ec2, vpcId):
+              LOGGER.info("Getting subnets for default VPC")
+              response = ec2.describe_subnets(Filters=[{"Name": "vpc-id", "Values": [vpcId]}])
+              subnet_ids = []
+              for subnet in response["Subnets"]:
+                  subnet_ids.append(subnet["SubnetId"])
+              return subnet_ids
+          def get_default_security_group_for_vpc(ec2, vpcId):
+              LOGGER.info("Getting default security group for default VPC")
+              response = ec2.describe_security_groups(
+                  Filters=[
+                      {"Name": "group-name", "Values": ["default"]},
+                      {"Name": "vpc-id", "Values": [vpcId]},
+                  ]
+              )
+              return response.get("SecurityGroups")[0].get("GroupId")
+          def lambda_handler(event, context):
+              try:
+                  ec2 = boto3.client("ec2")
+                  if event["RequestType"] == "Create":
+                      vpc_id = get_default_vpc_id(ec2)
+                      LOGGER.info(f"VPC ID is {vpc_id}")
+                      subnets = get_subnets_for_vpc(ec2, vpc_id)
+                      LOGGER.info(f"First subnet ID is {subnets[0]}")
+                      default_sg = get_default_security_group_for_vpc(ec2, vpc_id)
+                      LOGGER.info(f"Default Security Grounp is {default_sg}")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {
+                              "VpcId": vpc_id,
+                              "Subnets": subnets,
+                              "DefaultSecurityGroup": default_sg,
+                          },
+                          "",
+                      )
+                  elif event["RequestType"] == "Update":
+                      LOGGER.info("UPDATE!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource update successful!"},
+                      )
+                  elif event["RequestType"] == "Delete":
+                      LOGGER.info("DELETE!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource creation successful!"},
+                      )
+                  else:
+                      LOGGER.info("FAILED!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.FAILED,
+                          {"response": "Unexpected event received from CloudFormation"},
+                      )
+              except Exception as e:
+                  LOGGER.info("FAILED!")
+                  LOGGER.info(e)
+                  cfnresponse.send(
+                      event,
+                      context,
+                      cfnresponse.FAILED,
+                      {"response": "Exception during processing"},
+                  )
+      Description: Return default VPC ID and Subnets
+      Handler: index.lambda_handler
+      MemorySize: 512
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 60
+
+  EnableProjects:
+    Type: Custom::ResourceForEnablingSageMakerProjects
+    Properties:
+      ServiceToken: !GetAtt EnableProjectsLambda.Arn
+      ExecutionRole: !GetAtt SageMakerExecutionRole.Arn
+
+  EnableProjectsLambda:
+    Type: AWS::Lambda::Function
+    DependsOn: StudioDomain
+    Properties:
+      ReservedConcurrentExecutions: 5
+      Code:
+        ZipFile: |
+          # Function: CFEnableSagemakerProjects
+          # Purpose:  Enables Sagemaker Projects
+          import boto3
+          import logging
+          import cfnresponse
+          LOGGER = logging.getLogger()
+          LOGGER.setLevel(logging.INFO)
+          def enable_projects(sm_client, sc_client, studio_role_arn):
+              LOGGER.info("Enabling SageMaker projects for account!")
+              response = sm_client.enable_sagemaker_servicecatalog_portfolio()
+              LOGGER.info("Retrieving Service Catalog portolio shares")
+              response = sc_client.list_accepted_portfolio_shares()
+              portfolio_id = ""
+              for portfolio in response["PortfolioDetails"]:
+                  if portfolio["ProviderName"] == "Amazon SageMaker":
+                      portfolio_id = portfolio["Id"]
+              LOGGER.info("Associating Studio Role with portfolio")
+              response = sc_client.associate_principal_with_portfolio(
+                  PortfolioId=portfolio_id, PrincipalARN=studio_role_arn, PrincipalType="IAM"
+              )
+          def lambda_handler(event, context):
+              try:
+                  sm_client = boto3.client("sagemaker")
+                  sc_client = boto3.client("servicecatalog")
+                  if event["RequestType"] == "Create":
+                      LOGGER.info("CREATE!")
+                      execution_role = event["ResourceProperties"]["ExecutionRole"]
+                      enable_projects(sm_client, sc_client, execution_role)
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource creation successful!"},
+                      )
+                  elif event["RequestType"] == "Update":
+                      LOGGER.info("UPDATE!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource update successful!"},
+                      )
+                  elif event["RequestType"] == "Delete":
+                      LOGGER.info("DELETE!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource creation successful!"},
+                      )
+                  else:
+                      LOGGER.info("FAILED!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.FAILED,
+                          {"response": "Unexpected event received from CloudFormation"},
+                      )
+              except Exception as e:
+                  LOGGER.info("FAILED!")
+                  LOGGER.info(e)
+                  cfnresponse.send(
+                      event,
+                      context,
+                      cfnresponse.FAILED,
+                      {"response": "Exception during processing"},
+                  )
+      Description: Enable Sagemaker Projects
+      Handler: index.lambda_handler
+      MemorySize: 512
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 60
+
+  CleanUpSageMaker:
+    Type: Custom::ResourceForCleaningUpSageMaker
+    Properties:
+      ServiceToken: !GetAtt CleanUpSageMakerLambda.Arn
+      DomainId: !Ref StudioDomain
+      S3Bucket: !Ref StudioBucket
+
+  CleanUpSageMakerLambda:
+    Type: AWS::Lambda::Function
+    DependsOn: StudioDomain
+    Properties:
+      ReservedConcurrentExecutions: 5
+      Code:
+        ZipFile: |
+          # Function: CFCleanUpSageMaker
+          # Purpose:  Clean up sagemaker
+          import boto3
+          import cfnresponse
+          import logging
+          from time import sleep
+          LOGGER = logging.getLogger()
+          LOGGER.setLevel(logging.INFO)
+          def emptyBucket(bucket_name, boto_session):
+              LOGGER.info(f"Deleting objects from {bucket_name}")
+              bucket = boto_session.resource("s3").Bucket(bucket_name)
+              bucket.objects.filter().delete()
+              return None
+          def deleteAllActiveSageMakerProjects(sm):
+              projects = sm.list_projects()
+              active_project_names = [
+                  p["ProjectName"]
+                  for p in projects["ProjectSummaryList"]
+                  if p["ProjectStatus"] not in ["DeleteCompleted"]
+              ]
+              for project_name in active_project_names:
+                  LOGGER.info(f"Deleting project {project_name}")
+                  sm.delete_project(ProjectName=project_name)
+              while len(active_project_names) > 0:
+                  sleep(5)
+                  projects = sm.list_projects()
+                  active_project_names = [
+                      p["ProjectName"]
+                      for p in projects["ProjectSummaryList"]
+                      if p["ProjectStatus"] not in ["DeleteCompleted"]
+                  ]
+              return None
+          def deleteActiveSageMakerEndpoints(sm):
+              endpoints = sm.list_endpoints()
+              active_endpoints = [e.get("EndpointName") for e in endpoints.get("Endpoints")]
+              for endpoint in active_endpoints:
+                  LOGGER.info(f"Deleting Endpoint {endpoint}")
+                  sm.delete_endpoint(EndpointName=endpoint)
+              while len(active_endpoints) > 0:
+                  sleep(5)
+                  endpoints = sm.list_endpoints()
+                  active_endpoints = [e.get("EndpointName") for e in endpoints.get("Endpoints")]
+              return None
+          def deleteAllRunningSageMakerApps(domain_id, sm):
+              apps = sm.list_apps(DomainIdEquals=domain_id)
+              active_apps = [
+                  app for app in apps["Apps"] if app.get("Status") not in ["Deleted", "Deleting", "PendingCheckout"]
+              ]
+              for a in active_apps:
+                  LOGGER.info(f'Deleting app {a["AppName"]}')
+                  sm.delete_app(
+                      DomainId=a["DomainId"],
+                      AppType=a["AppType"],
+                      AppName=a["AppName"],
+                      UserProfileName=a["UserProfileName"],
+                  )
+              while len(active_apps) > 0:
+                  sleep(5)
+                  apps = sm.list_apps(DomainIdEquals=domain_id)
+                  active_apps = [
+                      app for app in apps["Apps"] if app.get("Status") not in ["Deleted"]
+                  ]
+              return None
+          def deleteUserProfiles(domain_id, sm):
+              user_profiles = sm.list_user_profiles(DomainIdEquals=domain_id)["UserProfiles"]
+              for profile in user_profiles:
+                  LOGGER.info(f"Deleting User Profile {profile}")
+                  sm.delete_user_profile(
+                      DomainId=domain_id, UserProfileName=profile["UserProfileName"]
+                  )
+              while user_profiles:
+                  sleep(5)
+                  user_profiles = sm.list_user_profiles(DomainIdEquals=domain_id)["UserProfiles"]
+              return None
+          def deleteSageMakerDomainPlusEFS(domain_id, sm):
+              LOGGER.info(f"Deleting SageMaker Domain {domain_id}")
+              sm.delete_domain(
+                  DomainId=domain_id, RetentionPolicy={"HomeEfsFileSystem": "Delete"}
+              )
+              domains = sm.list_domains()
+              while domain_id in [domain.get("DomainId") for domain in domains["Domains"]]:
+                  sleep(5)
+                  domains = sm.list_domains()
+              return None
+          def lambda_handler(event, context):
+              try:
+                  LOGGER.info("REQUEST RECEIVED:\n %s", event)
+                  boto_session = boto3.session.Session()
+                  sm = boto_session.client("sagemaker")
+                  if event["RequestType"] == "Create":
+                      LOGGER.info("CREATE!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource creation successful!"},
+                      )
+                  elif event["RequestType"] == "Update":
+                      LOGGER.info("UPDATE!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource update successful!"},
+                      )
+                  elif event["RequestType"] == "Delete":
+                      LOGGER.info("DELETE!")
+                      doimain_id = event["ResourceProperties"]["DomainId"]
+                      LOGGER.info("Emptying S3 Bucket")
+                      emptyBucket(event["ResourceProperties"]["S3Bucket"], boto_session)
+                      LOGGER.info("Deleting SageMaker Projects")
+                      deleteAllActiveSageMakerProjects(sm)
+                      LOGGER.info("Deleting SageMaker Endpoints")
+                      deleteActiveSageMakerEndpoints(sm)
+                      LOGGER.info("Deleting SageMaker Apps")
+                      deleteAllRunningSageMakerApps(doimain_id, sm)
+                      LOGGER.info("Deleting SageMaker User Profiles")
+                      deleteUserProfiles(doimain_id, sm)
+                      LOGGER.info("Deleting SageMaker Domain")
+                      deleteSageMakerDomainPlusEFS(doimain_id, sm)
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.SUCCESS,
+                          {"response": "Resource deletion successful!"},
+                      )
+                  else:
+                      LOGGER.info("FAILED!")
+                      cfnresponse.send(
+                          event,
+                          context,
+                          cfnresponse.FAILED,
+                          {"response": "Unexpected event received from CloudFormation"},
+                      )
+              except Exception as e:
+                  LOGGER.info("FAILED!")
+                  LOGGER.info(e)
+                  cfnresponse.send(
+                      event,
+                      context,
+                      cfnresponse.FAILED,
+                      {"response": "Exception during processing"},
+                  )
+      Description: Clean up Sagemaker
+      Handler: index.lambda_handler
+      MemorySize: 512
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 600
+Outputs:
+  Opensearchhostid:
+    Description: The opensearch host id
+    Value: !GetAtt OpenSearchServiceDomain.DomainEndpoint
+  S3DataRepo:
+    Description: Kendra Data Source Bucket
+    Value: !Ref  S3Bucket
+  Kendraindex:
+    Description: Kendra index id 
+    Value: !Ref  KendraIndex
+  codecommand1:
+    Description: Command to copy code in sagemaker  
+    Value: !Sub  "aws s3 cp s3://ws-assets-prod-iad-r-iad-ed304a55c2ca1aee/89d52d78-cc4d-45c3-9f5f-91476547b215/code/fsi-llm-demo.tar.gz . " 
+  codecommand2:
+    Description: Command to copy code in sagemaker  
+    Value: !Sub  "tar -xf fsi-llm-demo.tar.gz" 
+  
+
+              
