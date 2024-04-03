@@ -50,13 +50,9 @@ from transformers.testing_utils import CaptureLogger
 logger = logging.getLogger(__name__)
 
 
-
-def main():
-    
-    
+def main():    
     parser = argparse.ArgumentParser()
     
-
     # Training parameters
     parser.add_argument("--model_name_or_path", default="distilgpt2")
     parser.add_argument("--model_revision", default="main")
@@ -105,10 +101,14 @@ def main():
             raw_datasets["validation"] = load_dataset(
                 args.dataset_name,
                 split=f"train[:10%]",
+                use_auth_token=None,
+                keep_in_memory=False
             )
             raw_datasets["train"] = load_dataset(
                 args.dataset_name,
-                split=f"train[90%:]"
+                split=f"train[90%:]",
+                use_auth_token=None,
+                keep_in_memory=False
             )
     else:
         raise ValueError(
@@ -118,9 +118,8 @@ def main():
     # See more about loading any type of standard or custom dataset (from files, python dict, pandas DataFrame, etc) at
     # https://huggingface.co/docs/datasets/loading_datasets.html.
     
-    
     # Load pretrained model and tokenizer
-    #
+    #q
     # Distributed training:
     # The .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
